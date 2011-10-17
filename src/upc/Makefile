@@ -70,16 +70,6 @@ REDHAT.ROOT = $(PWD)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
-CC=gcc
-CXX=g++
-ifeq ("$(ROLLCOMPILER)" = "intel")
-    CC=icc
-    CXX=icpc
-endif
-ifeq ("$(ROLLCOMPILER)" = "pgi")
-    CC=pgcc
-    CXX=pgCC
-endif
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
@@ -90,6 +80,17 @@ ifeq ("$(ROLLNETWORK)", "eth")
   MPI = $(ROLLMPI)
 else
   MPI = $(ROLLMPI)_$(ROLLNETWORK)
+endif
+
+CC=gcc
+CXX=g++
+ifeq ("$(ROLLCOMPILER)","intel")
+  CC=icc
+  CXX=icpc
+endif
+ifeq ("$(ROLLCOMPILER)","pgi")
+  CC=pgcc
+  CXX=pgCC
 endif
 
 MPISETUP = \
@@ -106,22 +107,26 @@ MPISETUP = \
   export LD_LIBRARY_PATH=$${LD_LIBRARY_PATH}:$${MPI_HOME}/lib
 
 build:
-	tar zxvf $(SOURCE).tar.gz
-	tar zxvf upc_translator-$(VERSION).tar.gz
+	tar xvf upc_translator-$(VERSION).tar.gz
+	tar xvf $(SOURCE).tar.gz
 	( \
-	    $(COMPILERSETUP); \
-	    $(MPISETUP); \
-            cd upc_translator-$(VERSION);  \
-            make; \
-            make install PREFIX=$(REDHAT.ROOT)/src/upc/.build; \
-            cd ../.build; \
-            ../$(SOURCE)/configure CC=$(CC) CXX=$(CXX) MPI_CC=mpicc --disable-vapi --disable-ivb;  \
-           make \
-	)
+	  $(COMPILERSETUP); \
+	  $(MPISETUP); \
+          cd upc_translator-$(VERSION); \
+          make; \
+          make install PREFIX=$(PWD)/.build; \
+          cd ../.build; \
+          ../$(SOURCE)/configure MPI_CFLAGS="-O0 -g" CC=$(CC) CXX=$(CXX) MPI_CC=mpicc --prefix=$(ROOT)/$(PKGROOT); \
+          make \
+        )
 
 install::
-
-
+	( \
+          cd .build; \
+          make install \
+	)
 
 clean::
 	rm -rf $(SOURCE)
+	rm -rf upc_translator-$(VERSION)
+	rm -rf .build
