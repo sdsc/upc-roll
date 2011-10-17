@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+<description>
+Unified Parallel C Compiler
+http://upc.lbl.gov/
+</description>
+
+<copyright>
+Copyright (c) 2003-2011, The Regents of the University of California
+</copyright>
+
+<package>upc_ROLLCOMPILER_ROLLMPI_ROLLNETWORK</package>
+
+<post>
+
+<file name="/etc/profile.d/upc.csh" perms="0644">
+set path = ( /opt/upc/bin $path )
+</file>
+<file name="/etc/profile.d/upc.sh" perms="0644">
+export PATH=/opt/upc/bin:$PATH
+</file>
+
+</post>
+
+</kickstart>

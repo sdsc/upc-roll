@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+<description>
+Unified Parallel C Compiler
+http://upc.lbl.gov/
+</description>
+
+<copyright>
+Copyright (c) 2003-2011, The Regents of the University of California
+</copyright>
+
+<changelog>
+</changelog>
+
+<post>
+
+# Remove /etc/profile.d files in favor of loadable modules when available
+
+if test `grep -c /opt/modulefiles/applications /etc/profile.d/modules.csh` = 0; then
+  echo 'setenv MODULEPATH /opt/modulefiles/applications:$MODULEPATH' >> \
+       /etc/profile.d/modules.csh
+fi
+if test `grep -c /opt/modulefiles/applications /etc/profile.d/modules.sh` = 0; then
+  echo 'export MODULEPATH=/opt/modulefiles/applications:$MODULEPATH' >> \
+       /etc/profile.d/modules.sh
+fi
+
+if test -f /etc/profile.d/upc.sh; then
+
+  /bin/rm -f /etc/profile.d/upc.*
+  /bin/mkdir -m 0755 -p /opt/modulefiles/applications/upc
+
+<file name="/opt/modulefiles/applications/upc/2.12.2" perms="0644">
+#%Module1.0
+prepend-path PATH /opt/upc/bin
+</file>
+<file name="/opt/modulefiles/applications/upc/.version.2.12.2">
+#%Module1.0
+set ModulesVersion "2.12.2"
+</file>
+/bin/ln -s /opt/modulefiles/applications/upc/.version.2.12.2 \
+           /opt/modulefiles/applications/upc/.version
+fi
+
+</post>
+
+</kickstart>
