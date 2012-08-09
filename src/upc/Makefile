@@ -112,19 +112,26 @@ build:
 	( \
 	  $(COMPILERSETUP); \
 	  $(MPISETUP); \
-          cd upc_translator-$(VERSION); \
-          make; \
-          make install PREFIX=$(PWD)/.build; \
-          cd ../.build; \
-          ../$(SOURCE)/configure MPI_CFLAGS="-O0 -g" CC=$(CC) CXX=$(CXX) MPI_CC=mpicc --prefix=$(ROOT)/$(PKGROOT); \
-          make \
-        )
+	  cd upc_translator-$(VERSION); \
+	  make; \
+	  make install PREFIX=$(PWD)/.build; \
+	  cd ../.build; \
+	  ../$(SOURCE)/configure \
+	    --prefix=$(PKGROOT) CC=$(CC) CXX=$(CXX) MPI_CC=mpicc \
+	    MPI_CFLAGS="-O0 -g"; \
+	  make \
+	)
 
 install::
+	mkdir -p $(ROOT)/$(PKGROOT)
+	mkdir -p $(PKGROOT)
+	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-          cd .build; \
-          make install \
+	  cd .build; \
+	  make install; \
 	)
+	umount $(PKGROOT); \
+	rmdir $(PKGROOT) || true \
 
 clean::
 	rm -rf $(SOURCE)

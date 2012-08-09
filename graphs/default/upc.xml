@@ -19,15 +19,4 @@ http://http://upc.lbl.gov/docs
   <tail>upc-common</tail>
 </order>
 
-<edge from="envmodules-common">
-  <to>upc-modules-common</to>
-</edge>
-<order head="envmodules-common">
-  <tail>upc-modules-common</tail>
-</order>
-
-<order head="upc-common">
-  <tail>upc-modules-common</tail>
-</order>
-
 </graph>
