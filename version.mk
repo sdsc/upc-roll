@@ -1,4 +1,4 @@
-ROLLNAME = upc$(ROLLSUFFIX)
+ROLLNAME = upc
 RELEASE  = 0
 COLOR    = orange
 
