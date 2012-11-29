@@ -1,3 +1,3 @@
 NAME	= upc-modules
-VERSION	= 2.14.2
-RELEASE	= 1
+VERSION	= 2.16.0
+RELEASE	= 0
