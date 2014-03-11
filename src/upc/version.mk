@@ -2,6 +2,7 @@ NAME               = upc_$(ROLLCOMPILER)_$(ROLLMPI)_$(ROLLNETWORK)
 VERSION            = 2.16.0
 RELEASE            = 0
 PKGROOT            = /opt/upc
+RPM.EXTRAS         = AutoReq:No
 
 SRC_SUBDIR         = upc
 
