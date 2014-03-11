@@ -117,8 +117,8 @@ build: $(SRC_DIRS)
 	  $(MAKE) install PREFIX=$(PWD)/.build; \
 	  cd ../.build; \
 	  ../$(SOURCE_DIR)/configure \
-	    --prefix=$(PKGROOT) CC=$(CC) CXX=$(CXX) MPI_CC=mpicc \
-	    MPI_CFLAGS="-O0 -g"; \
+	    --prefix=$(PKGROOT) --without-multiconf \
+	    CC=$(CC) CXX=$(CXX) MPI_CC=mpicc MPI_CFLAGS="-O0 -g"; \
 	  $(MAKE) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
