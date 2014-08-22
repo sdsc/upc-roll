@@ -3,14 +3,14 @@
 <graph>
 
 <description>
-http://http://upc.lbl.gov/docs
+Unified Parallel C Compiler
+http://upc.lbl.gov/
 </description>
 
 <copyright>
+Copyright (c) 2000 - 2014 The Regents of the University of California.
+All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
-
-<changelog>
-</changelog>
 
 <edge from="base">
   <to>upc-common</to>
