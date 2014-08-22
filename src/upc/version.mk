@@ -1,7 +1,19 @@
-NAME               = upc_$(ROLLCOMPILER)_$(ROLLMPI)_$(ROLLNETWORK)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLNETWORK
+  ROLLNETWORK = eth
+endif
+
+ifndef ROLLMPI
+  ROLLMPI = openmpi
+endif
+
+NAME               = upc_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
 VERSION            = 2.16.0
 RELEASE            = 0
-PKGROOT            = /opt/upc
 RPM.EXTRAS         = AutoReq:No
 
 SRC_SUBDIR         = upc

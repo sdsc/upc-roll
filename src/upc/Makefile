@@ -56,57 +56,47 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
-endif
-ifndef ROLLMPI
-  ROLLMPI = openmpi
-endif
-
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/upc
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
-COMPILERSETUP = \
+CC = gcc
+CXX = g++
+ifeq ("$(COMPILERNAME)","intel")
+  CC = icc
+  CXX = icpc
+else ifeq ("$(COMPILERNAME)","pgi")
+  CC = pgcc
+  CXX = pgCC
+endif
+
+COMPILERSETUP =  \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load $(ROLLCOMPILER); \
-  fi
+    module load $(ROLLCOMPILER) || true; \
+  fi; \
+  echo === Compiler and version ===; \
+  $(CC) --version \
 
 ifeq ("$(ROLLNETWORK)", "eth")
-  MPI = $(ROLLMPI)
+  MPIMODULE = $(ROLLMPI)
 else
-  MPI = $(ROLLMPI)_$(ROLLNETWORK)
-endif
-
-CC=gcc
-CXX=g++
-ifeq ("$(ROLLCOMPILER)","intel")
-  CC=icc
-  CXX=icpc
-endif
-ifeq ("$(ROLLCOMPILER)","pgi")
-  CC=pgcc
-  CXX=pgCC
+  MPIMODULE = $(ROLLMPI)_$(ROLLNETWORK)
 endif
 
 MPISETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load $(MPI); \
+    module load $(MPIMODULE) || true; \
   fi; \
-  export MPI_HOME=`which mpicxx | perl -pe 's!/bin/.*!!'`; \
-  if test -z "$${MPI_HOME}"; then \
-    export MPI_HOME=/opt/$(ROLLMPI); \
+  if test -z "$${MPIHOME}"; then \
+    export MPIHOME=/opt/$(ROLLMPI); \
   fi; \
-  echo Using MPI from $${MPI_HOME}; \
-  export PATH=$${PATH}:$${MPI_HOME}/bin; \
-  export LD_LIBRARY_PATH=$${LD_LIBRARY_PATH}:$${MPI_HOME}/lib
+  echo === MPIHOME ===; \
+  echo $${MPIHOME} \
 
 build: $(SRC_DIRS)
 	( \
@@ -124,17 +114,18 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
+	# Using a bind mount appears to be the only way to prevent the build
+	# from incorporating $(ROOT) in binary files.
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	-mkdir -p -m 755 $(PKGROOT)
 	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd .build; \
-	  $(MAKE) install; \
+	  $(MAKE) install \
 	)
-	umount $(PKGROOT); \
-	rmdir $(PKGROOT) || true \
+	umount $(PKGROOT)
+	-rmdir -p $(PKGROOT)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SRC_DIRS)
-	rm -rf .build
+	rm -rf $(SRC_DIRS) .build
