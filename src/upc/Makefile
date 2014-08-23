@@ -79,7 +79,7 @@ COMPILERSETUP =  \
     module load $(ROLLCOMPILER) || true; \
   fi; \
   echo === Compiler and version ===; \
-  $(CC) --version \
+  $(CC) --version
 
 ifeq ("$(ROLLNETWORK)", "eth")
   MPIMODULE = $(ROLLMPI)
@@ -96,7 +96,7 @@ MPISETUP = \
     export MPIHOME=/opt/$(ROLLMPI); \
   fi; \
   echo === MPIHOME ===; \
-  echo $${MPIHOME} \
+  echo $${MPIHOME}
 
 build: $(SRC_DIRS)
 	( \
