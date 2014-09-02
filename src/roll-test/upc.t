@@ -32,7 +32,7 @@ print OUT <<END;
 #!/bin/bash
 if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
-  module load intel ROLLMPI_ROLLNETWORK upc
+  module load upc
 fi
 upcc -o $TESTFILE.exe $TESTFILE.upc
 upcrun -np 5 $TESTFILE.exe

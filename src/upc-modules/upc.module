@@ -1,3 +1,4 @@
 #%Module1.0
 setenv UPCHOME /opt/upc
 prepend-path PATH /opt/upc/bin
+module load ROLLCOMPILER
