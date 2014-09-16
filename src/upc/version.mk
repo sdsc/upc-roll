@@ -13,7 +13,7 @@ endif
 
 NAME              = upc_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
 VERSION           = 2.16.0
-RELEASE           = 0
+RELEASE           = 1
 PKGROOT           = /opt/upc
 
 SRC_SUBDIR        = upc

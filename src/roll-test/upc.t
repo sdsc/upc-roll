@@ -30,10 +30,7 @@ close(OUT);
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load upc
-fi
+module load upc
 upcc -o $TESTFILE.exe $TESTFILE.upc
 upcrun -np 5 $TESTFILE.exe
 END
@@ -51,7 +48,6 @@ SKIP: {
   $output = `/bin/bash $TESTFILE.sh 2>&1`;
   like($output, qr/Thread 4/, 'upc test run');
 
-  skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';
   `/bin/ls /opt/modulefiles/compilers/upc/[0-9]* 2>&1`;
   ok($? == 0, 'upc module installed');
   `/bin/ls /opt/modulefiles/compilers/upc/.version.[0-9]* 2>&1`;
