@@ -1,5 +1,9 @@
-NAME       = upc-modules
-VERSION    = 2.16.0
-RELEASE    = 1
+NAME        = upc-modules
+RELEASE     = 1
+PKGROOT     = /opt/modulefiles/compilers/upc
 
-RPM.EXTRAS = AutoReq:No
+VERSION_SRC = $(REDHAT.ROOT)/src/upc/version.mk
+VERSION_INC = version.inc
+include $(VERSION_INC)
+
+RPM.EXTRAS  = AutoReq:No
