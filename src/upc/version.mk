@@ -12,19 +12,19 @@ ifndef ROLLNETWORK
 endif
 
 NAME              = upc_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
-VERSION           = 2.16.0
-RELEASE           = 1
+VERSION           = 2.18.2
+RELEASE           = 0
 PKGROOT           = /opt/upc
 
 SRC_SUBDIR        = upc
 
-SOURCE_NAME       = upc
+SOURCE_NAME       = berkeley_upc
 SOURCE_SUFFIX     = tar.gz
 SOURCE_VERSION    = $(VERSION)
 SOURCE_PKG        = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
 SOURCE_DIR        = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
-UPC_TRANS_NAME    = upc_translator
+UPC_TRANS_NAME    = berkeley_upc_translator
 UPC_TRANS_SUFFIX  = tar.gz
 UPC_TRANS_VERSION = $(VERSION)
 UPC_TRANS_PKG     = $(UPC_TRANS_NAME)-$(UPC_TRANS_VERSION).$(UPC_TRANS_SUFFIX)
