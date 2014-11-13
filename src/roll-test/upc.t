@@ -21,7 +21,7 @@ print OUT <<END;
 
 int main (int argc, char **argv) {
   int i;
-  printf("Thread %d\n", MYTHREAD + 1);
+  printf("Thread %d\\n", MYTHREAD + 1);
   return 0;
 }
 END
