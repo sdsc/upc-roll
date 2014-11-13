@@ -60,32 +60,31 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-CC = gcc
-CXX = g++
-ifeq ("$(COMPILERNAME)","intel")
-  CC = icc
-  CXX = icpc
-else ifeq ("$(COMPILERNAME)","pgi")
-  CC = pgcc
-  CXX = pgCC
-endif
+LICENSE_FILES = $(SOURCE_DIR)/LICENSE.TXT
 
-COMPILERSETUP =  \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+$(NAME).spec: DESCRIPTION LICENSE
 
-MPISETUP = \
-  module load $(ROLLMPI) || true; \
-  echo === MPIHOME ===; \
-  echo $${MPIHOME}
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_MPI) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "Regents of the University of California" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo University of California > $@
 
 build: $(SRC_DIRS)
 	( \
-	  $(COMPILERSETUP); \
-	  $(MPISETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MPI); \
 	  cd $(UPC_TRANS_DIR); \
 	  $(MAKE); \
 	  $(MAKE) install PREFIX=$(PWD)/.build; \
@@ -101,15 +100,14 @@ install::
 	# Using a bind mount appears to be the only way to prevent the build
 	# from incorporating $(ROOT) in binary files.
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-	-mkdir -p -m 755 $(PKGROOT)
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
 	  cd .build; \
 	  $(MAKE) install \
 	)
-	umount $(PKGROOT)
-	-rmdir -p $(PKGROOT)
+	$(PKGROOT_BIND_UMOUNT)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SRC_DIRS) .build
+	rm -rf $(SRC_DIRS) .build DESCRIPTION LICENSE

@@ -12,8 +12,8 @@ Copyright (c) 2000 - 2014 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
 
-<package>upc_COMPILERNAME_MPINAME</package>
-<package>upc-modules</package>
-<package>upc-roll-test</package>
+<package>sdsc-upc</package>
+<package>sdsc-upc-modules</package>
+<package>sdsc-upc-roll-test</package>
 
 </kickstart>
