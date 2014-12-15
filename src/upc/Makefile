@@ -63,8 +63,6 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-LICENSE_FILES = $(SOURCE_DIR)/LICENSE.TXT
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -76,9 +74,7 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -q "Regents of the University of California" $(LICENSE_FILES); then \
-	  exit 2; \
-	fi
+	$(CHECK_LICENSE_FILES)
 	echo University of California > $@
 
 build: $(SRC_DIRS)
