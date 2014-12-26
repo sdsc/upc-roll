@@ -9,8 +9,8 @@ endif
 MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 NAME              = sdsc-upc
-VERSION           = 2.18.2
-RELEASE           = 2
+VERSION           = 2.20.0
+RELEASE           = 0
 PKGROOT           = /opt/upc
 
 SRC_SUBDIR        = upc
