@@ -10,7 +10,7 @@ MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 NAME              = sdsc-upc
 VERSION           = 2.20.0
-RELEASE           = 0
+RELEASE           = 1
 PKGROOT           = /opt/upc
 
 SRC_SUBDIR        = upc
@@ -29,4 +29,5 @@ UPC_TRANS_DIR     = $(UPC_TRANS_PKG:%.$(UPC_TRANS_SUFFIX)=%)
 
 TAR_GZ_PKGS       = $(SOURCE_PKG) $(UPC_TRANS_PKG)
 
-RPM.EXTRAS        = AutoReq:No
+RPM.EXTRAS        = AutoReq:No\nAutoProv:No
+RPM.PREFIX        = $(PKGROOT)
