@@ -9,8 +9,8 @@ endif
 MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 NAME              = sdsc-upc
-VERSION           = 2.20.0
-RELEASE           = 1
+VERSION           = 2019.4.4
+RELEASE           = 0
 PKGROOT           = /opt/upc
 
 SRC_SUBDIR        = upc
@@ -23,7 +23,7 @@ SOURCE_DIR        = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 UPC_TRANS_NAME    = berkeley_upc_translator
 UPC_TRANS_SUFFIX  = tar.gz
-UPC_TRANS_VERSION = $(VERSION)
+UPC_TRANS_VERSION = 2.28.0
 UPC_TRANS_PKG     = $(UPC_TRANS_NAME)-$(UPC_TRANS_VERSION).$(UPC_TRANS_SUFFIX)
 UPC_TRANS_DIR     = $(UPC_TRANS_PKG:%.$(UPC_TRANS_SUFFIX)=%)
 
